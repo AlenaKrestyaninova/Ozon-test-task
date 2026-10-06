@@ -1,0 +1,15 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.link {
+  color: #0070f3;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
