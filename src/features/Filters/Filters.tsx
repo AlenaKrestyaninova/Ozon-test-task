@@ -8,7 +8,7 @@ interface Props {
 export function Filters({value, onChange}: Props) {
   
   return (
-    <div style={{ width: '100vw', height: 400 }}>
+    <div style={{ width: '100%', height: 100 }}>
       <label>
         С{' '}
         <input

@@ -5,9 +5,5 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [react()],
   server: {
-    // Запросы фронта на /api/* Vite пересылает на наш Express-сервер — так нет проблем с CORS
-    proxy: {
-      '/api': 'http://localhost:3001',
-    },
   },
 })
