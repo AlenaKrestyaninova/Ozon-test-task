@@ -22,7 +22,7 @@
  
 Нужен Node.js (актуальная LTS-версия).
  
-1. Создайте файл `.env` в корне проекта (можно скопировать из `.env.example`) и укажите адрес API:
+1. Создайте файл `.env` в корне проекта и укажите адрес API:
 ```
    VITE_API_URL=https://gist.githubusercontent.com/SlepoRus/e4c30ec8b943db07ab7dfd17ef3a3c68/raw/992c0e1879c0a9bc53800122a84c74519b160dc4/payments.json
 ```
