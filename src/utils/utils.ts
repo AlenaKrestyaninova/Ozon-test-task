@@ -1,23 +1,16 @@
 import type { Point } from "../api/types/datas";
 
 /**
- * Преобразует дату из формата "ГГГГ-ММ-ДД" (из `<input type="date">`)
- * в числовой формат ГГГГММДД (например 19800101).
+ * Преобразует дату из формата "ММ_ДД_ГГГГ" в объект Date.
  *
- * @param date - Строка даты в формате "ГГГГ-ММ-ДД"
- * @returns Число в формате ГГГГММДД
+ * @param date - Строка даты в формате "ММ_ДД_ГГГГ"
+ * @returns дата в формате Date
  *
  * @example
- * inputDateToNumber("1980-01-01") // → 19800101
- * inputDateToNumber("2023-12-15") // → 20231215
+ * parseDate("12.11.1984") // → 11 декабря 1984
  */
-export function inputDateToNumber(date: string): number {
-  const [year, month, day] = date.split('-').map(Number);
-  return year * 10000 + month * 100 + day;
-}
-
 export const parseDate = (s: string) => {
-  const [m, d, y] = s.split('.').map(Number); // "12.11.1984" → 11 декабря 1984
+  const [m, d, y] = s.split('.').map(Number);
   return Date.UTC(y, m - 1, d);
 };
 

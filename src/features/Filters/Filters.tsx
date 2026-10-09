@@ -21,7 +21,7 @@ export function Filters({value, onChange}: Props) {
       </label>
       
       <label>
-        До{' '}
+        {' '}До{' '}
         <input
           type='date'
           placeholder="endDate"

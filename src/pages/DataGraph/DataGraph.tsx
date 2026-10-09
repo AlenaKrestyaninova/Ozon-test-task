@@ -4,7 +4,7 @@ import { Filters } from '../../features/Filters/Filters';
 import { Chart } from '../../features/Chart/Chart';
 import styles from './DataGraph.module.css';
 import type { DateFilters } from '../../api/types/datas';
-import { inputDateToNumber, lttb } from '../../utils/utils';
+import { lttb } from '../../utils/utils';
 
 export function DataGraph() {
   const { data: rowData, isLoading, isError, refetch } = useGetDataQuery();
@@ -13,9 +13,8 @@ export function DataGraph() {
 
   const chartData = useMemo(() => {
     if (!rowData) return [];
-    if (filters.startDate === '' && filters.endDate === '') return lttb(rowData, 800)
-    const start = filters.startDate ? inputDateToNumber(filters.startDate) : -Infinity;
-    const end = filters.endDate ? inputDateToNumber(filters.endDate) : Infinity;
+    const start = filters.startDate ? Date.parse(filters.startDate) : -Infinity;
+    const end = filters.endDate ? Date.parse(filters.endDate) : Infinity;
 
     const filtered = rowData.filter((d) => d.ts >= start && d.ts <= end);
     return lttb(filtered, 800);

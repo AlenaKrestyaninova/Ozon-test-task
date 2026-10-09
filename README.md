@@ -1,75 +1,75 @@
-# React + TypeScript + Vite
+# Data Chart
+ 
+Тестовое задание: страница с графиком по большому массиву данных и фильтром по диапазону дат.
+ 
+## Задание
+ 
+1. Получить массив данных с эндпоинта.
+2. Отобразить данные в виде графика.
+3. Добавить фильтр к графику.
+Особенности данных:
+ 
+- в ответе приходит около 15 000 объектов вида `{ date: "MM.DD.YYYY", value: number }`;
+- даты приходят строкой в формате `MM.DD.YYYY`.
+## Что реализовано
+ 
+- Загрузка данных через RTK Query, состояния загрузки, ошибки (с кнопкой «Повторить») и пустого ответа.
+- Линейный график на Recharts с временной осью и подсказкой при наведении.
+- Фильтр по диапазону дат («с» и «по»), границы диапазона включаются.
+## Как запустить проект
+ 
+Нужен Node.js (актуальная LTS-версия).
+ 
+```bash
+# установка зависимостей
+npm install
+ 
+# запуск в режиме разработки
+npm run dev
+```
+ 
+После запуска приложение будет доступно по адресу, который выведет Vite (по умолчанию http://localhost:5173).
+ 
+Дополнительные команды:
+ 
+```bash
+npm run build     # production-сборка
+npm run preview   # локальный просмотр собранной версии
+npm run lint      # проверка линтером
+```
+ 
+> Адрес API задаётся в `src/api/baseApi.ts` (`baseUrl`). Укажите свой эндпоинт или подключите мок.
+ 
+## Использованные технологии
+ 
+- [React](https://react.dev/) и [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/) — сборка и dev-сервер
+- [RTK Query](https://redux.js.org/toolkit/rtk-query/overview) и RTK Query — работа с API
+- [Recharts](https://recharts.org/) — график
+- CSS Modules — стили
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+## Принятые решения
+ 
+**Большой объём данных.** 15 000 точек в SVG отрисовываются медленно, поэтому:
+ 
+- в кэше хранятся все данные целиком, ничего не обрезается;
+- даты разбираются один раз при получении ответа (`transformResponse`) и хранятся как число (`ts`, миллисекунды в UTC), после чего данные сортируются по времени;
+- на график передаётся уменьшенная выборка (около 800 точек), полученная алгоритмом [LTTB](https://github.com/sveinn-steinarsson/flot-downsample) (Largest Triangle Three Buckets), который сохраняет форму кривой, пики и впадины;
+- прореживание применяется **после** фильтра, поэтому при сужении диапазона график снова показывает до 800 точек уже из выбранного участка, то есть детали проявляются при «зуме»;
+- тяжёлые вычисления обёрнуты в `useMemo`;
+- у линии отключены точки (`dot={false}`) и анимация (`isAnimationActive={false}`).
+**Временная ось.** Ось X построена по числовому `ts` (`type="number"`, `scale="time"`), поэтому расстояния между точками соответствуют реальным промежуткам времени.
+ 
+## Структура проекта
+ 
+```
+src/
+  api/          базовый createApi
+  features/     код, относящийся к конкретной фиче (компоненты, стили)
+  pages/        страницы приложения
+  utils/       общие утилиты (например, lttb, работа с датами)
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+## Планы по доработке
+- Добавить кеширование полученных данных
+- Подключить библиотеку для тестирования утилитных функций
