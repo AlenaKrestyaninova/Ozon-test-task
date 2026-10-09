@@ -15,8 +15,24 @@
   border-radius: 8px;
 }
 
-.company {
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.price {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.muted {
   color: #888;
+  font-size: 14px;
+}
+
+.outOfStock {
+  color: #d32f2f;
   font-size: 14px;
 }
 

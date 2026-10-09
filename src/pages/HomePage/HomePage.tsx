@@ -6,8 +6,8 @@ export function HomePage() {
     <div className={styles.page}>
       <h1>Главная</h1>
       <p>Тестовый проект для подготовки к собеседованию.</p>
-      <Link to="/users" className={styles.link}>
-        Перейти к пользователям →
+      <Link to="/chart" className={styles.link}>
+        Перейти к результату →
       </Link>
     </div>
   );

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { baseApi } from '../api/baseApi';
 
+// создала стор на всякий случай, но он не понадобился
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,

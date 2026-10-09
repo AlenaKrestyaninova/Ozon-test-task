@@ -1,7 +1,7 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import styles from './App.module.css';
 import { HomePage } from './pages/HomePage/HomePage';
-import { UsersPage } from './pages/Users/UsersPage';
+import { DataGraph } from './pages/DataGraph/DataGraph';
 
 function App() {
   return (
@@ -9,11 +9,11 @@ function App() {
       <main className={styles.main}>
         <nav className={styles.nav}>
           <Link to="/">Главная</Link>
-          <Link to="/users">Пользователи</Link>
+          <Link to="/chart">График</Link>
         </nav>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/users" element={<UsersPage />} />
+          <Route path="/chart" element={<DataGraph />} />
         </Routes>
       </main>
     </BrowserRouter>
